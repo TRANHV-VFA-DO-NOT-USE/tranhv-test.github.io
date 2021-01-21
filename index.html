@@ -3,16 +3,16 @@
   <head>
     <meta charset="UTF-8">
     <title>Test TranhHV</title>
-    <script src="index.js"></script>
-    <link rel="stylesheet" href="index.css">
     <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
     <meta name="twitter:card" content="summary" />
-<meta name="twitter:site" content="@nytimesbits" />
-<meta name="twitter:creator" content="@nickbilton" />
-<meta property="og:url" content="http://bits.blogs.nytimes.com/2011/12/08/a-twitter-for-my-sister/" />
-<meta property="og:title" content="A Twitter for My Sister" />
-<meta property="og:description" content="In the early days, Twitter grew so quickly that it was almost impossible to add new features because engineers spent their time trying to keep the rocket ship from stalling." />
-<meta property="og:image" content="http://graphics8.nytimes.com/images/2011/12/08/technology/bits-newtwitter/bits-newtwitter-tmagArticle.jpg" />
+    <meta name="twitter:site" content="@nytimesbits" />
+    <meta name="twitter:creator" content="@nickbilton" />
+    <meta property="og:url" content="http://bits.blogs.nytimes.com/2011/12/08/a-twitter-for-my-sister/" />
+    <meta property="og:title" content="A Twitter for My Sister" />
+    <meta property="og:description" content="In the early days, Twitter grew so quickly that it was almost impossible to add new features because engineers spent their time trying to keep the rocket ship from stalling." />
+    <meta property="og:image" content="http://graphics8.nytimes.com/images/2011/12/08/technology/bits-newtwitter/bits-newtwitter-tmagArticle.jpg" />
   </head>
 
   <body>
@@ -32,12 +32,17 @@
     </a>
     </br>
     <button id="capture" onclick="onClickCapture()">Capture</button>
+  </br>
     <img id="myImg"><img>
+  </br>
     <button id="share-twitter" onclick="onClickShareTwitter()">Twitter Share</button>
-    <div class="line-it-button" data-lang="en" data-type="share-b" data-ver="3" data-url="https://social-plugins.line.me/en/how_to_install" data-color="default" data-size="small" data-count="true" style="display: block;"></div>
-
-    <a href="https://www.facebook.com/sharer/sharer.php?u=example.org" target="_blank">
-      Share on Facebook
-    </a>
+  </br>
+  <div class="row">
+      <label for="fileToUpload">Select a File to Upload</label><br />
+      <input type="file" accept="image/*;capture=camera" name="fileToUpload" id="myFileInput" capture="camera" onchange="loadFile(event)">
+    </div>
+  </br>
   </body>
+  <script src="index.js"></script>
+    <link rel="stylesheet" href="index.css">
 </html>
