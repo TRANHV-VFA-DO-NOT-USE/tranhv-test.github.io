@@ -10,8 +10,8 @@ function onClickShareTwitter(){
 
 }
 
+// Capture on browser phone or select file in browser pc
 var myInput = document.getElementById('myFileInput');
-
 function sendPic() {
     var file = myInput.files[0];
     console.log('senpic');
@@ -22,11 +22,11 @@ function sendPic() {
     // and sending that via XHR, or by simply passing the file into 
     // the `send` method of an XHR instance.
 }
-
 myInput.addEventListener('change', sendPic, false);
 
-const shareButton = document.querySelector('.share-button');
 
+// Share button
+const shareButton = document.querySelector('.share-button');
 shareButton.addEventListener('click', event => {
   if (navigator.share) { 
    navigator.share({

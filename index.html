@@ -17,31 +17,39 @@
 
   <body>
 
-      <h1 class="blue" id="head">A Blue Heading</h1>
+      <h1 class="blue" id="head">Test</h1>
 
+      ----------------------------------
+      Share button twitter
+  </br>
     <a target="_blank" class="twitter-share-button"
       href="https://twitter.com/intent/tweet?text=Hello%20world"
       >
-     Tweet1
+     Tweet1 - with status
     </a>
     </br>
     <a target="_blank"  class="twitter-share-button"
       href="https://twitter.com/intent/tweet?url=https://image.shutterstock.com/image-photo/microphone-over-abstract-blurred-photo-600w-1196667214.jpg&text=I+am+eating+branston+pickel+right+now&hashtags=bransonpickel,pickles"
       >
-      Tweet2
+      Tweet2 - with link
     </a>
     </br>
-    <button id="capture" onclick="onClickCapture()">Capture</button>
+    ---------------------------------
+    <!-- <button id="capture" onclick="onClickCapture()">Capture</button> -->
+  
   </br>
-    <img id="myImg"><img>
+    <button class="share-button">Share button</button>
   </br>
-    <button id="share-twitter" onclick="onClickShareTwitter()">Twitter Share</button>
-  </br>
+  --------------------------
+  <div> Capture on browser phone or select file in browser pc</div>
   <div class="row">
       <label for="fileToUpload">Select a File to Upload</label><br />
       <input type="file" accept="image/*;capture=camera" name="fileToUpload" id="myFileInput" onchange="loadFile(event)">
     </div>
   </br>
+<img id="myImg"><img>
+</br>
+  -------------------------------
   </body>
   <script src="index.js"></script>
     <link rel="stylesheet" href="index.css">
