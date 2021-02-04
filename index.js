@@ -38,3 +38,38 @@ shareButton.addEventListener('click', event => {
     .catch(console.error);
     }
 });
+
+// ----
+// search by hashtag
+
+// curl --request GET --url 'https://api.twitter.com/1.1/search/tweets.json?q=nasa&result_type=popular' --header 'authorization: OAuth oauth_consumer_key="consumer-key-for-app", oauth_nonce="generated-nonce", oauth_signature="generated-signature", oauth_signature_method="HMAC-SHA1", oauth_timestamp="generated-timestamp", oauth_token="access-token-for-authed-user", oauth_version="1.0"'
+// $ twurl /1.1/search/tweets.json?q=nasa&result_type=popular
+
+
+function searchTwitter(query) {
+  let api_key = 'z1o3dgbr7pSjULjq6rHUTYUP9';
+  let api_secret_key = 'vwCCClx7hqkC7d8AnOqtiGuKTFONx8c4hLUHCtrGi4Yfh0SdVj';
+  $.ajax({
+      url: 'https://api.twitter.com/1.1/search/tweets.json?' + jQuery.param(query),
+      dataType: 'json',
+      success: function (data) {
+          var tweets = $('#tweets');
+          console.log('response');
+          console.log(data);
+          tweets.html('');
+          for (res in data['results']) {
+              tweets.append('<div>' + data['results'][res]['from_user'] + ' wrote: <p>' + data['results'][res]['text'] + '</p></div><br />');
+          }
+      }
+  });
+}
+
+$('#submit-search-twitter').click(function () {
+  var params = {
+      q: $('#query').val(),
+      rpp: 10
+  };
+  console.log('params');
+  console.log(params);
+  searchTwitter(params);
+});

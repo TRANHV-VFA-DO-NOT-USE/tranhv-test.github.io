@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+  <p>Video to use:</p>
+  <video id="video1" width="500" height="640" autoplay>
+    <!-- <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type='video/mp4'> -->
+  </video>
+  <button id="getUserMediaButton" onclick="onGetUserMediaButtonClick()">Get User Media</button>
+  <img width="500" height="640" id="frame" src="./frame2.png" />
+
+  <p>Canvas (the code draws the current frame of the video every 20 milliseconds):</p>
+  <canvas id="myCanvas" width="500" height="640" style="border:1px solid #d3d3d3;">
+    Your browser does not support the HTML5 canvas tag.</canvas>
+
+  <button id="takePhoto" onclick="onTakePhoto()">Take Photo</button>
+  <img id='im-result' />
+
+
+  <script>
+    var v = document.getElementById("video1");
+    var c = document.getElementById("myCanvas");
+    var im = document.getElementById('frame')
+    var imResult = document.getElementById('im-result')
+    var ctx = c.getContext("2d");
+    var i;
+
+    v.addEventListener("play", function () {
+      i = window.setInterval(function () {
+        ctx.drawImage(v, 5, 5, 500, 640)
+        ctx.drawImage(im, 5, 5, 500, 640)
+      }, 20);
+    }, false);
+    v.addEventListener("pause", function () {
+      window.clearInterval(i);
+    }, false);
+    v.addEventListener("ended", function () {
+      clearInterval(i);
+    }, false);
+
+    function onGetUserMediaButtonClick() {
+      navigator.mediaDevices.getUserMedia({ video: {
+              width: { min: 500, ideal: 500 },
+              height: { min: 640, ideal: 640 },
+              aspectRatio: { ideal: 1.7777777778 }
+            }, })
+        .then(mediaStream => {
+          document.querySelector('video').srcObject = mediaStream;
+
+          const track = mediaStream.getVideoTracks()[0];
+          imageCapture = new ImageCapture(track);
+        })
+        .catch(error => ChromeSamples.log(error));
+    }
+
+    function onTakePhoto() {
+      let dataURL = c.toDataURL('image/jpeg', 1.0);
+      // let url = dataURL.replace(/^data:image\/png/, 'data:application/octet-stream');
+      console.log(dataURL)
+      // imResult.setAttribute('href', url);
+    }
+  </script>
+
+</body>
+
+</html>
