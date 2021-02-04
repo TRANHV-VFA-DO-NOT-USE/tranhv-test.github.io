@@ -51,7 +51,7 @@
           const track = mediaStream.getVideoTracks()[0];
           imageCapture = new ImageCapture(track);
         })
-        .catch(error => ChromeSamples.log(error));
+        .catch(error => console.log(error));
     }
 
     function onTakePhoto() {
