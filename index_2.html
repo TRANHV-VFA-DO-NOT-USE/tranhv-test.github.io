@@ -11,7 +11,7 @@
   <img width="500" height="640" id="frame" src="./frame2.png" />
 
   <p>Canvas (the code draws the current frame of the video every 20 milliseconds):</p>
-  <canvas id="myCanvas" width="500" height="640" style="border:1px solid #d3d3d3;">
+  <canvas id="myCanvas" width="500" height="640" style="border:0px solid #d3d3d3;">
     Your browser does not support the HTML5 canvas tag.</canvas>
 
   <button id="takePhoto" onclick="onTakePhoto()">Take Photo</button>
@@ -28,8 +28,8 @@
 
     v.addEventListener("play", function () {
       i = window.setInterval(function () {
-        ctx.drawImage(v, 5, 5, 500, 640)
-        ctx.drawImage(im, 5, 5, 500, 640)
+        ctx.drawImage(v, 0, 0, 500, 640)
+        ctx.drawImage(im, 0, 0, 500, 640)
       }, 20);
     }, false);
     v.addEventListener("pause", function () {
@@ -43,15 +43,15 @@
       navigator.mediaDevices.getUserMedia({ video: {
               width: { min: 500, ideal: 500 },
               height: { min: 640, ideal: 640 },
-              aspectRatio: { ideal: 1.7777777778 }
+              aspectRatio: { ideal: 1.5}
             }, })
         .then(mediaStream => {
           document.querySelector('video').srcObject = mediaStream;
 
-          const track = mediaStream.getVideoTracks()[0];
-          imageCapture = new ImageCapture(track);
+          // const track = mediaStream.getVideoTracks()[0];
+          // imageCapture = new ImageCapture(track);
         })
-        .catch(error => console.log(error));
+        .catch(error => alert(error));
     }
 
     function onTakePhoto() {
