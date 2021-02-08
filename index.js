@@ -27,11 +27,15 @@ myInput.addEventListener('change', sendPic, false);
 
 // Share button
 const shareButton = document.querySelector('.share-button');
+const blob = await (await fetch(img)).blob();
+const file = new File([blob], 'fileName.png', { type: blob.type });
 shareButton.addEventListener('click', event => {
   if (navigator.share) { 
    navigator.share({
-      title: 'WebShare API Demo',
-      url: 'https://codepen.io/ayoisaiah/pen/YbNazJ'
+      title: 'Trận share',
+      url: 'https://test.com.vn',
+      text: "đây là test tranhv test....",
+      files: [file]
     }).then(() => {
       console.log('Thanks for sharing!');
     })
