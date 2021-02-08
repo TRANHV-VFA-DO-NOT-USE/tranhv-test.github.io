@@ -27,15 +27,15 @@ myInput.addEventListener('change', sendPic, false);
 
 // Share button
 const shareButton = document.querySelector('.share-button');
-const blob = await (await fetch(img)).blob();
-const file = new File([blob], 'fileName.png', { type: blob.type });
+// const blob = await (await fetch(img)).blob();
+// const file = new File([blob], 'fileName.png', { type: blob.type });
 shareButton.addEventListener('click', event => {
   if (navigator.share) { 
    navigator.share({
       title: 'Trận share',
       url: 'https://test.com.vn',
-      text: "đây là test tranhv test....",
-      files: [file]
+      text: "đây là test tranhv test.... #conchocon #linhdepgai",
+      files: [img]
     }).then(() => {
       console.log('Thanks for sharing!');
     })
