@@ -30,11 +30,18 @@ const shareButton = document.querySelector('.share-button');
 // const blob = await (await fetch(img)).blob();
 // const file = new File([blob], 'fileName.png', { type: blob.type });
 shareButton.addEventListener('click', event => {
+  console.log('Sharring!');
+  var myInput = document.getElementById('myFileInput');
+  console.log('myInput');
+  var file = myInput.files[0];
+  console.log('fileaaa');
+  console.log(file);
   if (navigator.share) { 
    navigator.share({
       title: 'Trận share',
       url: 'https://test.com.vn',
-      text: "đây là test tranhv test.... #conchocon #linhdepgai"
+      text: "đây là test tranhv test.... #conchocon #linhdepgai",
+      files: [file]
     }).then(() => {
       console.log('Thanks for sharing!');
     })
