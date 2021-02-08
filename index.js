@@ -34,8 +34,7 @@ shareButton.addEventListener('click', event => {
    navigator.share({
       title: 'Trận share',
       url: 'https://test.com.vn',
-      text: "đây là test tranhv test.... #conchocon #linhdepgai",
-      files: [img]
+      text: "đây là test tranhv test.... #conchocon #linhdepgai"
     }).then(() => {
       console.log('Thanks for sharing!');
     })
