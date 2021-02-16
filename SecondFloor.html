@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<link type="text/css" rel="stylesheet" href="main.css">
+	<style>
+		body {
+			background-color: #f0f0f0;
+			color: #444;
+		}
+		a {
+			color: #08f;
+		}
+		.info {
+  			position:absolute;
+		}
+	</style>
+<title>=Biteki Second Floor=</title>
+
+</head>
+<body>
+
+	<div class="info">
+			<button onclick="cameraControls.setLookAt(cameraControls.getPosition().x,cameraControls.getPosition().y,cameraControls.getPosition().z,cameraControls.getPosition().x,cameraControls.getPosition().y,cameraControls.getPosition().z - EPS,true);"> Drop Sphere Rotation </button>
+	<button onclick="cameraControls.setLookAt( -1.8 , 1, 2, -1.8, 1, -0.24, true );">Position 1</button>
+	<button onclick="cameraControls.setLookAt( 1.8 , 1, 2 , 1.8, 1, -0.24, true );">Position 2</button>
+	<button onclick="cameraControls.reset(true);cameraControls.moveTo(0,1,0,true);">Entrance</button>
+	<button onclick="cameraControls.reset(true);cameraControls.moveTo(0,1,-25,true);">Elevator</button>
+	</div>
+
+<script src="https://unpkg.com/three@0.118.3/build/three.min.js"></script>
+<script src="dist/camera-controls.js"></script>
+
+	<script>
+
+	CameraControls.install( { THREE: THREE } );
+
+	// Scene variables
+	const width  = window.innerWidth;
+	const height = window.innerHeight;
+	const clock = new THREE.Clock();
+	const scene  = new THREE.Scene();
+	const camera = new THREE.PerspectiveCamera( 60, 1, 1, 1000 );
+	const EPS = 1e-5;
+	// in order to archive FPS look, set EPSILON for the distance to the center
+	camera.position.set( 0, 0, EPS );
+	//Initialize renderer
+	const renderer = new THREE.WebGLRenderer();
+	// Camera variables
+	const cameraControls = new CameraControls( camera, renderer.domElement );
+	// Canvas
+	var canvas = renderer.domElement;
+	document.body.appendChild(canvas);
+
+	// Raycasting variables
+	var raycaster = new THREE.Raycaster();
+	var mouse = new THREE.Vector2();
+	var intersects = [];
+	var poi = new THREE.Vector3();
+	var n = new THREE.Vector3();
+	var la = new THREE.Vector3();
+	var intersectPoint;
+	var intersectObj;
+	//////////////////////////
+
+	// Beacons on the ground
+	var beacons = [
+  		new THREE.Vector3(1.976,0,-2.278),
+  		new THREE.Vector3(-1.462,0,-2.278),
+  		new THREE.Vector3(-2.801,0,-6.829),
+  		new THREE.Vector3(2.484,0,-6.829),
+  		new THREE.Vector3(2.484,0,-10.768),
+  		new THREE.Vector3(-2.543,0,-10.768),
+  		new THREE.Vector3(0,0,-15.027),
+		new THREE.Vector3(0,0,-7.337),
+	]; 
+
+	var covers = [
+  		new THREE.Vector3(4.099,1.149,-18.225),
+  		new THREE.Vector3(-4.087,1.149,-18.218),
+  		new THREE.Vector3(-1.762,1.149,-16.209),
+  		new THREE.Vector3(1.753,1.149,-16.231),
+  		new THREE.Vector3(4.136,1.149,-14.242),
+  		new THREE.Vector3(-4.070,1.149,-14.242),
+  		new THREE.Vector3(-1.752,1.149,-12.220),
+  		new THREE.Vector3(1.738,1.149,-12.220),
+  		new THREE.Vector3(4.116,1.149,-10.240),
+  		new THREE.Vector3(-4.089,1.149,-10.240),
+  		new THREE.Vector3(-1.751,1.149,-8.211),
+  		new THREE.Vector3(1.746,1.149,-8.211),
+  		new THREE.Vector3(4.126,1.149,-6.218),
+  		new THREE.Vector3(-4.077,1.149,-6.218),
+		new THREE.Vector3(-4.096,1.149,-2.219),
+		new THREE.Vector3(-1.749,1.149,-4.226),
+		new THREE.Vector3(1.729,1.149,-4.226),
+		new THREE.Vector3(4.103,1.149,-2.217),
+		new THREE.Vector3(1.731,1.149,-0.244),
+		new THREE.Vector3(-1.754,1.149,-0.244),
+
+	]; 
+	//////////////////////////
+
+	loadScene();
+
+    /// <summary>
+    /// Update function
+    /// </summary>
+	(function anim () {
+
+		 if (resize(renderer)) {
+   			camera.aspect = canvas.clientWidth / canvas.clientHeight;
+   			camera.updateProjectionMatrix();
+  		}
+
+  		// snip
+		const delta = clock.getDelta();
+
+		const hasControlsUpdated = cameraControls.update( delta );
+
+  		requestAnimationFrame( anim );
+
+		renderer.render( scene, camera );
+
+
+	} )();
+
+	function resize(renderer) {
+  		const canvas = renderer.domElement;
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+
+		renderer.setSize( window.innerWidth, window.innerHeight );
+	}
+
+    /// <summary>
+    /// Load the scene exported from threejs editor
+    /// On loaded, put the lights ,camera on
+    /// </summary>
+	function loadScene()
+	{
+		// Initiate loader
+		var loader = new THREE.ObjectLoader();
+
+		loader.load("models/1F.json", function(object) {
+
+			object.scale.set(1, 1, 1);
+			object.position.set(0, 0, 0);
+			scene.add(object);
+
+			loadCamera();
+			//loadLights();
+			loadHelperCone();
+
+			plane = scene.getObjectByName("floor",true);
+			wall = scene.getObjectByName("cover2",true);
+			canvas.addEventListener("mousemove", onMouseMove, false); 
+			canvas.addEventListener("click", onMouseClick, false);
+
+			renderer.render( scene, camera );
+
+			//Move camera to default position
+			cameraControls.moveTo(0,1,0);
+		});
+
+	}
+
+    /// <summary>
+    /// Place helper cone on the ground
+    /// </summary>
+	var plane,wall;
+	function onMouseMove(event){
+  
+  		mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+		mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+  
+  		raycaster.setFromCamera(mouse, camera);
+
+  		intersects = raycaster.intersectObject(plane);
+
+  		if(intersects.length <= 0)
+  		{
+  			intersects = raycaster.intersectObject(wall);
+  		}
+
+  		if (intersects.length > 0) {
+    
+    		let i0 = intersects[0];
+    		let obj = i0.object;
+
+    		intersectObj = obj;
+    
+    		poi.copy(i0.point);
+    		n.copy(i0.face.normal);
+   			n.transformDirection( obj.matrixWorld );
+  			la.copy(poi).add(n);
+    
+    		normalHelper.position.copy(poi);
+    		normalHelper.lookAt(la);
+    		normalHelper.visible = true;
+
+    		intersectPoint = poi;
+
+  		}
+  		else{
+    		normalHelper.visible = false;
+    		intersectPoint = null;;
+
+  		}
+	}
+
+	function onMouseClick(event){
+
+		moveToCover();
+		moveToBeacon();
+
+	}
+
+	function moveToBeacon()
+	{
+		if(intersectPoint)
+		{
+			for ( var i = 0; i < beacons.length; i ++ ) {
+ 
+				if(beacons[i].distanceTo(intersectPoint) < 0.25)
+				{
+				cameraControls.moveTo(beacons[i].x, 1 ,beacons[i].z,true);
+				return;
+				}
+		}
+		}
+	}
+
+	function moveToCover() {
+		if(intersectPoint)
+		{
+			for ( var i = 0; i < covers.length; i ++ ) {
+
+				if(covers[i].distanceTo(intersectPoint) < 0.5)
+				{
+					var destination = new THREE.Vector3();
+					destination.set(covers[i].x,covers[i].y,covers[i].z);
+					destination.y = 1;
+					destination.z += 2;
+
+					cameraControls.setLookAt( destination.x , destination.y, destination.z, // position
+											  covers[i].x, covers[i].y ,covers[i].z, //target
+											 true );
+					resetCamera();
+
+					return;
+				}
+			}
+		}
+	}
+
+	function resetCamera()
+	{
+		cameraControls.setLookAt(cameraControls.getPosition().x,cameraControls.getPosition().y,cameraControls.getPosition().z,cameraControls.getPosition().x,cameraControls.getPosition().y,cameraControls.getPosition().z - EPS,true);
+	}
+
+    /// <summary>
+    /// Initialize camera controls
+    /// </summary>
+	function loadCamera()
+	{
+		// Initiate loader
+		cameraControls.azimuthRotateSpeed = - 0.3; // negative value to invert rotation direction
+		cameraControls.polarRotateSpeed   = - 0.3; // negative value to invert rotation direction
+		cameraControls.truckSpeed = 1 / EPS * 3;
+		cameraControls.saveState();
+	}
+
+    /// <summary>
+    /// Initialize lights
+    /// </summary>
+	function loadLights()
+	{
+		var light = new THREE.DirectionalLight(0xffffff, 0.5);
+		light.position.set(1, 2, 3);
+		scene.add(light);
+		scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+		scene.background = new THREE.Color( 0x006eff);
+	}
+
+	/// <summary>
+    /// Load helper cone
+    /// </summary>
+    var normalHelper;
+	function loadHelperCone()
+	{
+		var normalHelperGeom = new THREE.ConeBufferGeometry(0.05, 1);
+		normalHelperGeom.translate(0, 0.5, 0);
+		normalHelperGeom.rotateX(Math.PI * 0.5);
+		normalHelper = new THREE.Mesh(normalHelperGeom, new THREE.MeshNormalMaterial());
+		normalHelper.visible = false;
+		normalHelper.scale.set(1,1,1);
+		scene.add(normalHelper);
+	}
+
+	</script>
+
+</body>
+</html>
