@@ -4,18 +4,17 @@
 <body>
 
   <p>Video to use:</p>
-  <video id="video1" width="500" height="640" autoplay>
+  <video id="video1" width="500" height="640" autoplay style="display: none;">
     <!-- <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type='video/mp4'> -->
   </video>
   <button id="getUserMediaButton" onclick="onGetUserMediaButtonClick()">Get User Media</button>
-  <img width="500" height="640" id="frame" src="./frame2.png" />
+  <button id="takePhoto" onclick="onTakePhoto()">Take Photo</button>
+  <img width="500" height="640" id="frame" src="./frame2.png" style="display: none;"/>
 
   <p>Canvas (the code draws the current frame of the video every 20 milliseconds):</p>
   <canvas id="myCanvas" width="500" height="640" style="border:0px solid #d3d3d3;">
     Your browser does not support the HTML5 canvas tag.</canvas>
-
-  <button id="takePhoto" onclick="onTakePhoto()">Take Photo</button>
-  <img id='im-result' />
+  <img id='im-result' crossorigin="anonymous"/>
 
 
   <script>
