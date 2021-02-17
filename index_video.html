@@ -57,7 +57,7 @@
       let dataURL = c.toDataURL('image/jpeg', 1.0);
       let url = dataURL.replace(/^data:image\/jpeg/, 'data:application/octet-stream');
       console.log(dataURL)
-      imResult.setAttribute('href', url);
+      imResult.setAttribute('src', dataURL);
     }
   </script>
 
