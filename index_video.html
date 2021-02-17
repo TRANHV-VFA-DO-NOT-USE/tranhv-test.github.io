@@ -14,7 +14,7 @@
   <p>Canvas (the code draws the current frame of the video every 20 milliseconds):</p>
   <canvas id="myCanvas" width="500" height="640" style="border:0px solid #d3d3d3;">
     Your browser does not support the HTML5 canvas tag.</canvas>
-  <img id='im-result' crossorigin="anonymous"/>
+  <img width="500" height="640" id='im-result' crossorigin="anonymous"/>
 
 
   <script>
@@ -55,7 +55,7 @@
 
     function onTakePhoto() {
       let dataURL = c.toDataURL('image/jpeg', 1.0);
-      let url = dataURL.replace(/^data:image\/png/, 'data:application/octet-stream');
+      let url = dataURL.replace(/^data:image\/jpeg/, 'data:application/octet-stream');
       console.log(dataURL)
       imResult.setAttribute('href', url);
     }
